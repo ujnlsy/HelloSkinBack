@@ -1,0 +1,179 @@
+<script type="text/babel">
+/**
+ * Created by lsy on 2019/1/9.
+ */
+import * as api from '@/api/api.js'
+import * as mapping from '@/utils/keyMap.js'
+import * as tools from '@/utils/tools.js'
+
+export default {
+	name: 'SkinDoc',
+//  prop: {
+//		customerId: ''
+//  },
+  data() {
+    return {
+    	skinDoc: {
+        medicalSolution: '',
+        skinSolution: '',
+        haveProduct: '',
+        haveProcess: '',
+        note: '',
+        images: []
+      },
+      hisSolution: [],
+      dialogImageUrl: '',
+      dialogVisible: false,
+      isEdit: false
+    }
+  },
+  computed: {
+    customerType: function () {
+      return mapping.customerType('0')
+    }
+  },
+  created () {
+		this.getHisSolution()
+  },
+  methods: {
+    submitSkinDoc() {
+      let that = this
+      console.log(that.skinDoc)
+      const json = api.postCustomerSkinDoc({
+        query: that.skinDoc,
+        method: 'post'
+      }).then((res) => {
+        let r = res.data.code
+        console.log(r)
+      })
+    },
+
+    getHisSolution() {
+    	let that = this
+      const json = api.getCustomerHisSolution({
+      	query: {
+      		customerId: that.customerId
+        }
+      }).then((res) => {
+    		let r = res.data.data.records
+        r.forEach(function (item, index, r) {
+          r[index].date = tools.timestampToTime(r[index].date, 'y-m-d')
+        })
+        that.hisSolution = r
+        console.log(r)
+      })
+    },
+
+    //保存修改
+    editSkinDoc(item) {
+    	let that = this
+      this.isEdit = true
+    	this.skinDoc.medicalSolution = item.medicalSolution
+      this.skinDoc.skinSolution = item.skinSolution
+      this.skinDoc.haveProduct = item.haveProduct
+      this.skinDoc.haveProcess = item.haveProcess
+      this.skinDoc.note = item.note
+      this.skinDoc.images = item.images
+
+      const json = api.putCustomerHisSolution({
+      	query: {
+      		customerId: that.skinDoc.customerId,
+          recordID: item.recordId,
+          medicalSolution: that.skinDoc.medicalSolution,
+          skinSolution: that.skinDoc.skinSolution,
+          haveProduct: that.skinDoc.haveProduct,
+          haveProcess: that.skinDoc.haveProcess,
+          note: that.skinDoc.note,
+          images: that.skinDoc.images
+        }
+      }).then((res) => {
+        let r = res.data.code
+        console.log(r)
+      })
+    },
+
+    //取消修改
+    cancelSkinDoc() {
+    	this.skinDoc = []
+      this.isEdit = false
+    },
+
+    handleSuccess(response, file, fileList) {
+      this.skinDoc.images = fileList
+    },
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+      this.skinDoc.images = fileList
+    },
+    handlePictureCardPreview(file) {
+    	console.log(file)
+      this.dialogImageUrl = file.url;
+      this.dialogVisible = true;
+    }
+  }
+};
+</script>
+
+<template>
+  <div class="skin-doc">
+    <div class="current-solution">
+      <el-form label-position="top" :model="skinDoc"  ref="skinDoc" >
+        <el-form-item label="用药方案" >
+          <el-input type="textarea" :autosize="{ minRows: 4}" v-model="skinDoc.medicalSolution"></el-input>
+        </el-form-item>
+        <el-form-item label="护肤方案" >
+          <el-input type="textarea" :autosize="{ minRows: 4}" v-model="skinDoc.skinSolution"></el-input>
+        </el-form-item>
+        <el-form-item label="近况图片">
+          <el-upload
+            action="https://jsonplaceholder.typicode.com/posts/"
+            list-type="picture-card"
+            :on-preview="handlePictureCardPreview"
+            :on-remove="handleRemove"
+            :on-success="handleSuccess"
+            :file-list="skinDoc.images">
+            <i class="el-icon-plus"></i>
+          </el-upload>
+          <el-dialog :visible.sync="dialogVisible">
+            <img width="100%" :src="dialogImageUrl" alt="">
+          </el-dialog>
+        </el-form-item>
+        <el-form-item label="现有药妆" >
+          <el-input type="textarea" :autosize="{ minRows: 4}" v-model="skinDoc.haveProduct"></el-input>
+        </el-form-item>
+        <el-form-item label="用药过程" >
+          <el-input type="textarea" :autosize="{ minRows: 4}" v-model="skinDoc.haveProcess"></el-input>
+        </el-form-item>
+        <el-form-item label="备注" >
+          <el-input type="textarea" :autosize="{ minRows: 4}" v-model="skinDoc.note"></el-input>
+        </el-form-item>
+        <div v-if="isEdit" class="edit-his">
+          <el-button @click="editSkinDoc"  type="primary" size="small">保存修改</el-button>
+          <el-button @click="cancelSkinDoc"  type="primary" size="small">取消修改</el-button>
+        </div>
+        <el-button v-else  @click="submitSkinDoc"  type="primary" size="small">保存</el-button>
+
+      </el-form>
+    </div>
+    <div class="history-solution">
+      <div class="his-title">历史档案</div>
+      <div v-for="item in hisSolution" class="his-item">
+        <div class="his-time">{{item.date}}</div>
+        <div class="his-drug">用药方案：{{item.medicalSolution}}</div>
+        <div class="his-skin">护肤方案：{{item.skinSolution}}</div>
+        <div v-for="img in item.images" class="his-pic">近况图片：
+          <img class="recent-img" src="img.src"/>
+        </div>
+        <div class="his-cosmeceuticals">现有药妆：{{item.haveProduct}}</div>
+        <div class="his-process">用药过程：{{item.haveProcess}}</div>
+        <div class="his-other">备注：{{item.note}}</div>
+        <div class="his-edit">
+          <el-button @click="editSkinDoc(item)"  type="primary" size="small">修改</el-button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style>
+</style>
