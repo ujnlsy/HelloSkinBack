@@ -8,6 +8,9 @@
 |参数名|类型|是否必须|描述|
 |---|---|---|---|
 |name|string|F|客户姓名模糊搜索|
+|pageNum|int|F|页码，不传默认返回第一页|
+|pageSize|int|F|页码记录数，不传默认20条每页|
+
 
 
 示例：
@@ -22,8 +25,9 @@
 |---|---|---|
 |customerId|string|客户姓名模糊搜索|
 |createTime|int|创建时间|
+|updateTime|int|更新时间|
 |name|string|姓名|
-|memberLevel|string|会员类型，值为1普通，2皮肤管理，3痘痘消痘，4痘痘维稳，5痘痘强化|
+|memberType|string|会员类型，值为1普通，2皮肤管理，3痘痘消痘，4痘痘维稳，5痘痘强化|
 |circleTime|array|管理时间周期|
 |high|int|身高|
 |weight|int|体重|
@@ -31,8 +35,12 @@
 |sex|string|性别，值为1表示男，2表示女|
 |region|array|城市|
 |diagnose|string|诊断|
-|medicalSolution|string|F|用药方案|
-|skinSolution|string|F|护肤方案|
+|medicalSolution|string|用药方案|
+|skinSolution|string|护肤方案|
+|page|object|分页信息|
+|total|int|总记录数|
+|pageSize|int|每页条数|
+|currentPage|int|当前页码|
 
 
 示例：
@@ -45,8 +53,9 @@
       {
         customerId: '2312',  //
         createTime: 1533293827000, //创建时间
+        updateTime: 1533293827000,  //更新时间
         name: '张美美',
-        memberLevel: '1',
+        memberType: '1',
         circleTime: [ 1546272000000, 1546876800000 ],
         age: 1546272000000,
         sex: '2',
@@ -57,7 +66,12 @@
         medicalSolution: '吃一个月维安酯，一天3次，一次1粒',
         skinSolution: '晚上洗完脸之后涂水杨酸'
       },
-    ]
+    ],
+    page: {
+      total: 128,
+      pageSize: 20,
+      currentPage: 1
+    }
   }
 }
 ```

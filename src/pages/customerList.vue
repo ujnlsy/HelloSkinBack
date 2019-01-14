@@ -15,12 +15,16 @@ export default {
       	name: ''
       },
       tableData: [],
+      page: {
+      	total: 0,
+        pageSize: 20,
+        currentPage: 1
+      }
     };
   },
 
   created() {
-    this.getCustomerList()
-    let a = tools.timestampToTime(1533293827000, 'y-m-d')
+    this.getCustomerList(this.page.currentPage)
   },
   methods: {
     handleSelect(key, keyPath) {
@@ -35,28 +39,36 @@ export default {
     	this.$router.push({path: '/index/customerEdit', query: { customer: id }})
     },
 
-    getCustomerList() {
+    getCustomerList(pageNum) {
       let that = this
       const json = api.getCustomerList({
       	query: {
-      		name: that.query.name
+      		name: that.query.name,
+          pageNum: pageNum,
+          pageSize: that.page.pageSize
         }
       }).then((res) => {
       	let r = res.data.data.records
         r.forEach(function (item, index, r) {
-        	r[index].date = tools.timestampToTime(r[index].date, 'y-m-d')
-          r[index].editTime = tools.timestampToTime(r[index].editTime, 'y-m-d h:m')
+        	r[index].createTime = tools.timestampToTime(r[index].createTime, 'y-m-d')
+          r[index].updateTime = tools.timestampToTime(r[index].updateTime, 'y-m-d h:m')
+          r[index].memberType = mapping.customerType(r[index].memberType)
           let age = new Date().getTime()-r[index].birth
           r[index].birth = Math.floor(age/(3600*24*365*1000))
-          r[index].manageStart = tools.timestampToTime(r[index].manageStart, 'y-m-d')
-          r[index].manageEnd = tools.timestampToTime(r[index].manageEnd, 'y-m-d')
-          r[index].gender = mapping.gender(r[index].gender)
-          console.log(r[index].gender)
+          r[index].manageStart = tools.timestampToTime(r[index].circleTime[0], 'y-m-d')
+          r[index].manageEnd = tools.timestampToTime(r[index].circleTime[1], 'y-m-d')
+          r[index].gender = mapping.gender(r[index].sex)
+          r[index].region = r[index].region[0]+'-'+r[index].region[1]
         })
       	that.tableData = r
+
+        that.page = res.data.data.page
       }).catch( (errMsg)=>{
         console.log(errMsg);//错误提示信息
       })
+    },
+    handleCurrentChange(val) {
+      this.getCustomerList(this.page.currentPage)
     }
   }
 }
@@ -83,12 +95,12 @@ export default {
       stripe
       style="width: 100%">
       <el-table-column
-        prop="date"
+        prop="createTime"
         label="创建时间"
         width="100">
       </el-table-column>
       <el-table-column
-        prop="editTime"
+        prop="updateTime"
         label="最近更新"
         width="140">
       </el-table-column>
@@ -110,7 +122,7 @@ export default {
         </template>
       </el-table-column>
       <el-table-column
-        prop="membership"
+        prop="memberType"
         label="会员"
         width="100">
       </el-table-column>
@@ -130,7 +142,7 @@ export default {
         </template>
       </el-table-column>
       <el-table-column
-        prop="address"
+        prop="region"
         label="地区"
         width="120">
       </el-table-column>
@@ -147,6 +159,14 @@ export default {
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+      background
+      @current-change="handleCurrentChange"
+      :current-page.sync="page.currentPage"
+      :page-size="page.pageSize"
+      layout="total, prev, pager, next"
+      :total="page.total">
+    </el-pagination>
   </el-main>
 </template>
 

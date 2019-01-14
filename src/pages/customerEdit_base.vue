@@ -8,6 +8,9 @@
 
   export default {
   	name: 'BaseInfo',
+    props: {
+  		customerId: String
+    },
     data() {
       return {
         pca: pca,  //省市
@@ -40,14 +43,14 @@
           }]
         },
         baseInfo: {
-          memberLevel: '',
+          memberType: '',
           circleTime: '',
           name: '',
           age: '',
           sex: '',
           high: '',
           weight: '',
-          region: '',
+          region: [],
           eat: [],
           medhis: [],
           stayUp: '',
@@ -82,24 +85,20 @@
     computed: {
       customerType: function () {
         return mapping.customerType('0')
+      },
+      eat: function () {
+        return mapping.eat('0')
+      },
+      medhis: function () {
+        return mapping.medhis('0')
       }
     },
     created () {
     },
     methods: {
-      //获取页面id
-      getCustomerId() {
-        let id = this.$router.query.customer
-        console.log(id)
-        if (id != '') {
-          this.isEdit = true
-        } else {
-          this.activeName = '2'
-        }
-      },
       //会员类型改变
       changeCustomerType() {
-        if (this.baseInfo.memberLevel != '1') {
+        if (this.baseInfo.memberType != '1') {
           this.hasCircleTime = true
         } else {
           this.hasCircleTime = false
@@ -114,7 +113,39 @@
           method: 'post'
         }).then((res) => {
           let r = res.data.code
-          console.log(r)
+          if (res.data.code == 0) {
+            that.$message({
+              message: '恭喜你，这是一条成功消息',
+              type: 'success'
+            });
+
+            that.$emit('getNewCreatedCustomerId', res.data.data.customerId)
+          }
+        })
+      },
+      //获取会员基本信息
+      getBaseInfo() {
+      	let that = this
+        const json = api.getCustomerBase({
+        	query: {
+        		customerId: that.customerId
+          }
+        }).then((res) => {
+      		that.baseInfo = res.data
+        })
+      },
+      //修改会员基本信息
+      updateBaseInfo() {
+      	let that = this
+        const json = api.putCustomerBase({
+        	query: that.baseInfo
+        }).then((res) => {
+      		if (res.data.code == 0) {
+            that.$message({
+              message: '恭喜你，这是一条成功消息',
+              type: 'success'
+            });
+          }
         })
       }
     }
@@ -128,7 +159,7 @@
       <div class="customer-type">
         <div class="type-name type-item">
           <div class="input-label">会员类型</div>
-          <el-select v-model="baseInfo.memberLevel" @change="changeCustomerType()" placeholder="请选择">
+          <el-select v-model="baseInfo.memberType" @change="changeCustomerType()" placeholder="请选择">
             <el-option
               v-for="item in customerType"
               :key="item.value"
@@ -148,6 +179,7 @@
             range-separator="至"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
+            value-format="timestamp"
             :picker-options="pickerCircleTime">
           </el-date-picker>
         </div>
@@ -165,6 +197,7 @@
           <el-date-picker
             v-model="baseInfo.age"
             type="month"
+            value-format="timestamp"
             placeholder="出生年月">
           </el-date-picker>
         </div>
@@ -197,25 +230,14 @@
         <div class="eatHabbit base-item">
           <div class="input-label question">1.饮食习惯</div>
           <el-checkbox-group v-model="baseInfo.eat">
-            <el-checkbox label="饮食清淡"></el-checkbox>
-            <el-checkbox label="喜爱重口味，咸、辣等"></el-checkbox>
-            <el-checkbox label="爱甜食，蛋糕、饮料、糖果等"></el-checkbox>
-            <el-checkbox label="爱辛辣，火锅、川湘菜"></el-checkbox>
-            <el-checkbox label="爱油炸，炸鸡、油条等"></el-checkbox>
-            <el-checkbox label="爱零食"></el-checkbox>
-            <el-checkbox label="抽烟"></el-checkbox>
-            <el-checkbox label="饮酒"></el-checkbox>
+            <el-checkbox v-for="item in eat" label="item.value">{{item.label}}</el-checkbox>
           </el-checkbox-group>
         </div>
 
         <div class="medhistory base-item">
           <div class="input-label question">2.是否有病史</div>
           <el-checkbox-group v-model="baseInfo.medhis">
-            <el-checkbox label="糖尿病" ></el-checkbox>
-            <el-checkbox label="高血压" ></el-checkbox>
-            <el-checkbox label="心脏病" ></el-checkbox>
-            <el-checkbox label="红斑狼疮" ></el-checkbox>
-            <el-checkbox label="其他" ></el-checkbox>
+            <el-checkbox v-for="item in medhis" label="item.value" >{{item.label}}</el-checkbox>
           </el-checkbox-group>
         </div>
 
@@ -232,7 +254,8 @@
         </div>
 
       </div>
-      <el-button @click="submitBaseInfo"  type="primary" size="small">保存</el-button>
+      <el-button v-if="customerId == ''" @click="submitBaseInfo"  type="primary" size="small">保存</el-button>
+      <el-button v-else @click="updateBaseInfo"  type="primary" size="small">保存</el-button>
     </el-form>
 
 

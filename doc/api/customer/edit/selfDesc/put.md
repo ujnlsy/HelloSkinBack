@@ -1,5 +1,5 @@
 #### 地址
-`/api/customer/add/selfDesc/put`
+`/api/customer/edit/selfDesc/put`
 
 #### 描述
 提交建档自诉

@@ -18,6 +18,7 @@ export default {
     return {
     	isEdit: false,  //是否显示
       activeName: '0',  //控制tab显示
+      customerId: '',  //客户id
     }
   },
   computed: {
@@ -41,6 +42,10 @@ export default {
       } else {
     		this.activeName = '2'
       }
+    },
+    //获取customerEdit_base子组件新建客户信息的customerId
+    getNewCreatedCustomerId(id) {
+    	this.customerId = id
     }
   }
 };
@@ -56,15 +61,15 @@ export default {
     </div>
 
     <el-tabs v-model="activeName" type="border-card">
-      <el-tab-pane label="皮肤档案" name="0">
+      <el-tab-pane :customer-id="customerId" label="皮肤档案" name="0">
         <skin-doc></skin-doc>
       </el-tab-pane>
 
-      <el-tab-pane label="建档自述" name="1">
+      <el-tab-pane :customer-id="customerId" label="建档自述" name="1">
         <self-desc></self-desc>
       </el-tab-pane>
 
-      <el-tab-pane label="客户信息" name="2">
+      <el-tab-pane :customer-id="customerId" label="客户信息" name="2">
         <base-info></base-info>
       </el-tab-pane>
 

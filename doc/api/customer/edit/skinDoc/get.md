@@ -1,5 +1,5 @@
 #### 地址
-`/api/customer/add/selfDoc/get`
+`/api/customer/edit/selfDoc/get`
 
 #### 描述
 获取客户皮肤档案历史记录
@@ -27,8 +27,8 @@
     records: [
       {
         recordId: '2312',  //护肤历史记录id
-        date: 1533293827000, //创建时间
-        editTime: 1533293827000,  //最近一次修改时间
+        createdTime: 1533293827000, //创建时间
+        modifiedTime: 1533293827000,  //最近一次修改时间
         diagnose: '敏感肌',  //诊断
         haveProduct: '',  //现有药妆
         haveProcess: '',  //用药过程

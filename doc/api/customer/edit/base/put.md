@@ -1,12 +1,13 @@
 #### 地址
-`/api/customer/add/base/post`
+`/api/customer/edit/base/put`
 
 #### 描述
-提交客户基本信息
+修改客户基本信息
 
 #### 参数
 |参数名|类型|是否必须|描述|
 |---|---|---|---|
+|customerId|string|T|客户id|
 |memberType|string|F|会员类型，值为1普通，2皮肤管理，3痘痘消痘，4痘痘维稳，5痘痘强化|
 |circleTime|array|F|管理时间周期|
 |name|string|T|姓名|
@@ -24,6 +25,7 @@
 示例：
 ```
 {
+  customerId: '100001', //客户id
   memberType: '1',
   circleTime: [ 1546272000000, 1546876800000 ],
   name: '张美美',
@@ -35,7 +37,7 @@
   eat: ['抽烟', '饮酒'],
   medhis: ['糖尿病', '高血压'],
   stayUp: '熬夜',
-  pregnancy: '不备孕',
+  pregnancy: '不备孕'
 }
 ```
 
@@ -43,10 +45,7 @@
 ```
 {
   code: 0,
-  msg: "ok",
-  data: {
-    customerId: '100001'  //保存成功返回一个客户id，字符串格式
-  }
+  msg: "ok"
 }
 ```
 

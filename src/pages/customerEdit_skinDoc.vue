@@ -8,12 +8,13 @@ import * as tools from '@/utils/tools.js'
 
 export default {
 	name: 'SkinDoc',
-//  prop: {
-//		customerId: ''
-//  },
+  prop: {
+		customerId: String
+  },
   data() {
     return {
     	skinDoc: {
+        diagnose: '',
         medicalSolution: '',
         skinSolution: '',
         haveProduct: '',
@@ -38,12 +39,19 @@ export default {
   methods: {
     submitSkinDoc() {
       let that = this
+      that.skinDoc.customerId = that.customerId
       console.log(that.skinDoc)
       const json = api.postCustomerSkinDoc({
         query: that.skinDoc,
         method: 'post'
       }).then((res) => {
         let r = res.data.code
+        if (res.data.code == 0) {
+          that.$message({
+            message: '恭喜你，这是一条成功消息',
+            type: 'success'
+          });
+        }
         console.log(r)
       })
     },
@@ -57,7 +65,7 @@ export default {
       }).then((res) => {
     		let r = res.data.data.records
         r.forEach(function (item, index, r) {
-          r[index].date = tools.timestampToTime(r[index].date, 'y-m-d')
+          r[index].createdTime = tools.timestampToTime(r[index].createdTime, 'y-m-d')
         })
         that.hisSolution = r
         console.log(r)
@@ -68,6 +76,7 @@ export default {
     editSkinDoc(item) {
     	let that = this
       this.isEdit = true
+      this.skinDoc.diagnose = item.diagnose
     	this.skinDoc.medicalSolution = item.medicalSolution
       this.skinDoc.skinSolution = item.skinSolution
       this.skinDoc.haveProduct = item.haveProduct
@@ -79,6 +88,7 @@ export default {
       	query: {
       		customerId: that.skinDoc.customerId,
           recordID: item.recordId,
+          diagnose: that.skinDoc.diagnose,
           medicalSolution: that.skinDoc.medicalSolution,
           skinSolution: that.skinDoc.skinSolution,
           haveProduct: that.skinDoc.haveProduct,
@@ -118,6 +128,9 @@ export default {
   <div class="skin-doc">
     <div class="current-solution">
       <el-form label-position="top" :model="skinDoc"  ref="skinDoc" >
+        <el-form-item label="诊断">
+          <el-input type="textarea" :autosize="{ minRows: 2}" v-model="skinDoc.diagnose"></el-input>
+        </el-form-item>
         <el-form-item label="用药方案" >
           <el-input type="textarea" :autosize="{ minRows: 4}" v-model="skinDoc.medicalSolution"></el-input>
         </el-form-item>
@@ -158,7 +171,8 @@ export default {
     <div class="history-solution">
       <div class="his-title">历史档案</div>
       <div v-for="item in hisSolution" class="his-item">
-        <div class="his-time">{{item.date}}</div>
+        <div class="his-time">{{item.createdTime}}</div>
+        <div class="his-diagnose">诊断：{{item.diagnose}}</div>
         <div class="his-drug">用药方案：{{item.medicalSolution}}</div>
         <div class="his-skin">护肤方案：{{item.skinSolution}}</div>
         <div v-for="img in item.images" class="his-pic">近况图片：

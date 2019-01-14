@@ -1,5 +1,5 @@
 #### 地址
-`/api/customer/add/selfDoc/post`
+`/api/customer/edit/selfDoc/post`
 
 #### 描述
 提交皮肤档案

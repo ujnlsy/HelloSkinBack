@@ -5,8 +5,6 @@ import Login from '@/pages/login'
 import Index from '@/pages/index'
 import customerList from '@/pages/customerList'
 import customerEdit from '@/pages/customerEdit'
-import customerAdd from '@/pages/customerAdd'
-
 
 Vue.use(Router)
 
@@ -36,11 +34,6 @@ export default new Router({
           path: 'customerEdit',
           name: 'customerEdit',
           component: customerEdit
-        },
-        {
-          path: 'customerAdd',
-          name: 'customerAdd',
-          component: customerAdd
         }
       ]
     }

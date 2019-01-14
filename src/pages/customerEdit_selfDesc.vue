@@ -7,6 +7,9 @@ import * as mapping from '@/utils/keyMap.js'
 
 export default {
 	name: 'SelfDesc',
+  props: {
+    customerId: String
+  },
   data() {
     return {
     	selfDesc: {
@@ -30,20 +33,51 @@ export default {
   computed: {
     customerType: function () {
       return mapping.customerType('0')
+    },
+    skinType: function () {
+      return mapping.skinType(0)
+    },
+    skinProblem: function () {
+      return mapping.skinProblem(0)
+    },
+    heavy: function () {
+      return mapping.heavy(0)
+    },
+    pimpleType: function () {
+      return mapping.pimpleType(0)
     }
   },
   created () {
   },
   methods: {
+		//提交客户自述
     submitSelfDesc() {
       let that = this
+      that.selfDesc.customerId = that.customerId
       console.log(that.selfDesc)
-      const json = api.postCustomerSelfDesc({
+      const json = api.putCustomerSelfDesc({
         query: that.selfDesc,
         method: 'post'
       }).then((res) => {
         let r = res.data.code
+        if (res.data.code == 0) {
+          that.$message({
+            message: '恭喜你，这是一条成功消息',
+            type: 'success'
+          });
+        }
         console.log(r)
+      })
+    },
+    //获取客户自述
+    getCustomerSelfDesc() {
+    	let that = this
+      const json = api.getCustomerSelfDesc({
+      	query: {
+      		customerId: that.customerId
+        }
+      }).then((res) => {
+    		let r = res.data.data
       })
     }
   }
@@ -57,26 +91,14 @@ export default {
       <div class="skin-type base-item">
         <div class="input-label question">1.你自己觉得皮肤类型？</div>
         <el-checkbox-group v-model="selfDesc.skinType">
-          <el-checkbox label="完全干性皮肤，全脸都觉得干"></el-checkbox>
-          <el-checkbox label="完全油性皮肤，全脸都觉得油"></el-checkbox>
-          <el-checkbox label="混合（T区油，脸颊干）偏干性皮肤"></el-checkbox>
-          <el-checkbox label="混合（T区油，脸颊干）偏油性皮肤"></el-checkbox>
-          <el-checkbox label="出油很多，但是自己却觉得干"></el-checkbox>
-          <el-checkbox label="皮肤敏感"></el-checkbox>
+          <el-checkbox v-for="i in skinType" :label="i.value">{{i.label}}</el-checkbox>
         </el-checkbox-group>
       </div>
 
       <div class="skin-problem base-item">
         <div class="input-label question">2.你遇到的皮肤问题？</div>
         <el-checkbox-group v-model="selfDesc.skinProblem">
-          <el-checkbox label="痘痘、痤疮"></el-checkbox>
-          <el-checkbox label="黑头、粉刺"></el-checkbox>
-          <el-checkbox label="皮肤红血丝、敏感肌、发红"></el-checkbox>
-          <el-checkbox label="斑"></el-checkbox>
-          <el-checkbox label="毛孔粗大"></el-checkbox>
-          <el-checkbox label="出油多"></el-checkbox>
-          <el-checkbox label="黑眼圈"></el-checkbox>
-          <el-checkbox label="抗衰老"></el-checkbox>
+          <el-checkbox v-for="i in skinProblem" :label="i.value">{{i.label}}</el-checkbox>
         </el-checkbox-group>
       </div>
 
@@ -98,8 +120,7 @@ export default {
     <div class="pimple">
       <div class="pimple-title">痘痘情况</div>
       <el-form-item label="1.是否有例假前痘痘加重的情况">
-        <el-radio v-model="selfDesc.heavy" label="会加重">会加重</el-radio>
-        <el-radio v-model="selfDesc.heavy" label="不会加重">不会加重</el-radio>
+        <el-radio v-for="i in heavy" v-model="selfDesc.heavy" label="i.value">{{i.label}}</el-radio>
       </el-form-item>
 
       <el-form-item label="2.长痘痘多久了（第一次长痘的年龄）？">
@@ -107,11 +128,7 @@ export default {
       </el-form-item>
 
       <el-form-item label="3.痘痘类型？">
-        <el-radio v-model="selfDesc.pimpleType" label="只有红肿痘痘">只有红肿痘痘</el-radio>
-        <el-radio v-model="selfDesc.pimpleType" label="只有粉刺，没有红肿痘痘">只有粉刺，没有红肿痘痘</el-radio>
-        <el-radio v-model="selfDesc.pimpleType" label="红痘和粉刺都有，红痘更多一些">红痘和粉刺都有，红痘更多一些</el-radio>
-        <el-radio v-model="selfDesc.pimpleType" label="红痘和粉刺都有，粉刺更多一些">红痘和粉刺都有，粉刺更多一些</el-radio>
-        <el-radio v-model="selfDesc.pimpleType" label="红痘和粉刺都有，数量差不多">红痘和粉刺都有，数量差不多</el-radio>
+        <el-radio v-for="i in pimpleType" v-model="selfDesc.pimpleType" label="i.value">{{i.label}}</el-radio>
       </el-form-item>
 
       <el-form-item label="4.背上有没有痘痘？" >
