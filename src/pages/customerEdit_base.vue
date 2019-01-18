@@ -131,7 +131,7 @@
         		customerId: that.customerId
           }
         }).then((res) => {
-      		that.baseInfo = res.data
+      		that.baseInfo = res.data.data
         })
       },
       //修改会员基本信息

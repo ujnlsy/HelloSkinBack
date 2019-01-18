@@ -5,6 +5,7 @@ import Login from '@/pages/login'
 import Index from '@/pages/index'
 import customerList from '@/pages/customerList'
 import customerEdit from '@/pages/customerEdit'
+import skinDoc from '@/app/skinDoc'
 
 Vue.use(Router)
 
@@ -36,6 +37,11 @@ export default new Router({
           component: customerEdit
         }
       ]
+    },
+    {
+      path: '/customer',
+      name: 'Customer',
+      component: skinDoc,
     }
   ]
 })

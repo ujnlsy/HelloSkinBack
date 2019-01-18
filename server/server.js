@@ -17,6 +17,7 @@ app.all('*', function(req, res, next) {
 
 app.use('/api/customer/list', require('./api/customer/list/get'));
 app.use('/api/customer/edit/base', require('./api/customer/edit/base/post'));
+app.use('/api/customer/edit/base', require('./api/customer/edit/base/get'));
 app.use('/api/customer/edit/selfDesc', require('./api/customer/edit/selfDesc/post'));
 app.use('/api/customer/edit/skinDoc', require('./api/customer/edit/skinDoc/get'));
 app.use('/api/customer/edit/skinDoc', require('./api/customer/edit/skinDoc/post'));
