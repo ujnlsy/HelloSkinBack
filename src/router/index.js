@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
 import Login from '@/pages/login'
 import Index from '@/pages/index'
 import customerList from '@/pages/customerList'
@@ -12,15 +11,12 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
-    },
-    {
       path: '/login',
       name: 'Login',
       component: Login
     },
+    
+    //管理后台
     {
       path: '/index',
       name: 'Index',
@@ -38,6 +34,8 @@ export default new Router({
         }
       ]
     },
+    
+    //用户移动端
     {
       path: '/customer',
       name: 'Customer',

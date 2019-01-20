@@ -34,7 +34,9 @@ export default {
     }
   },
   created () {
-		this.getHisSolution()
+		if(this.customerId != '' && this.customerId !=undefined){
+      this.getHisSolution()
+    }
   },
   methods: {
     submitSkinDoc() {

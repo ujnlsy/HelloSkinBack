@@ -35,30 +35,30 @@ export default{
           password: this.password
         }
 
-//        let json = api.getUser({
-//        	query: data
-//          }).then((res) => {
-//      		if(res.data.code == 0)
-//          {
-//            let userid = res.data.data.userid
-//            let password = this.password
-//            let userType = res.data.data.userType
-//            let expire = 1000 * 60 * 24 * 30
-//            setCookie('userid', userid, expire)
-//            setCookie('password', password, expire)
-//            setCookie('userType', userType, expire)
-//
-//            if(userType == 0) {
-//              that.$router.push('/customerList')
-//            }
-//
-//            if(userType == 1) {
-//              that.$router.push('/customerList')
-//            }
-//          }
-//        }).catch( (errMsg)=>{
-//          console.log(errMsg);//错误提示信息
-//        })
+        let json = api.getUser({
+        	query: data
+          }).then((res) => {
+      		if(res.data.code == 0)
+          {
+            let userid = res.data.data.userid
+            let password = this.password
+            let userType = res.data.data.userType
+            let expire = 1000 * 60 * 24 * 30
+            setCookie('userid', userid, expire)
+            setCookie('password', password, expire)
+            setCookie('userType', userType, expire)
+
+            if(userType == 0) {
+              that.$router.push('/customerList')
+            }
+
+            if(userType == 1) {
+              that.$router.push('/customer')
+            }
+          }
+        }).catch( (errMsg)=>{
+          console.log(errMsg);//错误提示信息
+        })
       }
     }
   }

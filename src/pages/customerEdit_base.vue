@@ -230,14 +230,14 @@
         <div class="eatHabbit base-item">
           <div class="input-label question">1.饮食习惯</div>
           <el-checkbox-group v-model="baseInfo.eat">
-            <el-checkbox v-for="item in eat" label="item.value">{{item.label}}</el-checkbox>
+            <el-checkbox v-for="item in eat" :label="item.value">{{item.label}}</el-checkbox>
           </el-checkbox-group>
         </div>
 
         <div class="medhistory base-item">
           <div class="input-label question">2.是否有病史</div>
           <el-checkbox-group v-model="baseInfo.medhis">
-            <el-checkbox v-for="item in medhis" label="item.value" >{{item.label}}</el-checkbox>
+            <el-checkbox v-for="item in medhis" :label="item.value" >{{item.label}}</el-checkbox>
           </el-checkbox-group>
         </div>
 
@@ -254,7 +254,7 @@
         </div>
 
       </div>
-      <el-button v-if="customerId == ''" @click="submitBaseInfo"  type="primary" size="small">保存</el-button>
+      <el-button v-if="customerId == undefined" @click="submitBaseInfo"  type="primary" size="small">保存</el-button>
       <el-button v-else @click="updateBaseInfo"  type="primary" size="small">保存</el-button>
     </el-form>
 
