@@ -5,7 +5,7 @@
  * ajax请求配置
  */
 import axios from 'axios'
-//import Qs from 'qs'
+import Qs from 'qs'
 
 import * as cookie from './cookie.js'
 
@@ -15,9 +15,13 @@ axios.defaults.timeout = 10000;   // 超时时间
 
 //整理数据
 axios.defaults.transformRequest = function (data) {
-//data = Qs.stringify(data);
-  data = JSON.stringify(data);
-  return data;
+// data = Qs.stringify(data);
+  // data = JSON.stringify(data);
+  let ret = ''
+  for (let it in data) {
+    ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+  }
+  return ret
 };
 
 // 路由请求拦截
