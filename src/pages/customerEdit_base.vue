@@ -43,9 +43,10 @@
           }]
         },
         baseInfo: {
+        	userName: '',
+          name: '',
           memberType: '',
           circleTime: '',
-          name: '',
           age: '',
           sex: '',
           high: '',
@@ -60,24 +61,6 @@
           name: [
             { required: true, message: '请输入活动名称', trigger: 'blur' },
             { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-          ],
-          region: [
-            { required: true, message: '请选择活动区域', trigger: 'change' }
-          ],
-          date1: [
-            { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
-          ],
-          date2: [
-            { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
-          ],
-          type: [
-            { type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }
-          ],
-          resource: [
-            { required: true, message: '请选择活动资源', trigger: 'change' }
-          ],
-          desc: [
-            { required: true, message: '请填写活动形式', trigger: 'blur' }
           ]
         }
       }
@@ -104,24 +87,38 @@
           this.hasCircleTime = false
         }
       },
+      validateSubmit() {
+      	let userName = this.baseInfo.userName
+        let reg=/^[a-zA-Z][a-zA-Z0-9]{2,30}$/;
+        if(reg.test(userName)==false){
+          this.$message({
+            message: '用户名格式不正确',
+            type: 'error'
+          });
+          return false;
+        }
+        return true;
+      },
       //提交会员基本信息
       submitBaseInfo() {
         let that = this
-        console.log(that.baseInfo)
-        const json = api.postCustomerBase({
-          query: that.baseInfo,
-          method: 'post'
-        }).then((res) => {
-          let r = res.data.code
-          if (res.data.code == 0) {
-            that.$message({
-              message: '恭喜你，这是一条成功消息',
-              type: 'success'
-            });
+        let validate = that.validateSubmit()
+        if(validate){
+          const json = api.postCustomerBase({
+            query: that.baseInfo,
+            method: 'POST'
+          }).then((res) => {
+            let r = res.data.code
+            if (res.data.code == 0) {
+              that.$message({
+                message: '恭喜你，这是一条成功消息',
+                type: 'success'
+              });
 
-            that.$emit('getNewCreatedCustomerId', res.data.data.customerId)
-          }
-        })
+              that.$emit('getNewCreatedCustomerId', res.data.data.customerId)
+            }
+          })
+        }
       },
       //获取会员基本信息
       getBaseInfo() {
@@ -156,6 +153,18 @@
 
     <el-form label-position="top" :model="baseInfo" :rules="baseInfoRules" ref="baseInfo" >
 
+      <div class="baseinfo">
+        <div class="userName base-item">
+          <div class="input-label">用户名</div>
+          <el-input v-model="baseInfo.userName" placeholder="输入用户名字拼音"></el-input>
+        </div>
+
+        <div class="name base-item">
+          <div class="input-label" >姓名</div>
+          <el-input v-model="baseInfo.name" placeholder="输入用户称呼姓名"></el-input>
+        </div>
+      </div>
+
       <div class="customer-type">
         <div class="type-name type-item">
           <div class="input-label">会员类型</div>
@@ -187,10 +196,6 @@
 
 
       <div class="baseinfo">
-        <div class="name base-item">
-          <div class="input-label">姓名</div>
-          <el-input v-model="baseInfo.name"></el-input>
-        </div>
 
         <div class="age base-item">
           <div class="input-label">年龄</div>

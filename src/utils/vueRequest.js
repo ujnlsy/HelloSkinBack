@@ -21,18 +21,34 @@ const vueRequest = function (params = {}, url) {
   let method = params.method || 'GET'
   
   const promise = new Promise((resolve,reject)=>{
-    axios({
-      method: method,
-      url: url,
-      data: data
-    }).then(function (response) {
-      //成功响应值response
-      resolve(response)
-    }).catch(function (error) {
-      //失败响应值error
-      console.log(error)
-      reject(error)
-    });
+    if(method == 'GET') {
+      axios({
+        method: 'GET',
+        url: url,
+        query: data
+      }).then(function (response) {
+        //成功响应值response
+        resolve(response)
+      }).catch(function (error) {
+        //失败响应值error
+        console.log(error)
+        reject(error)
+      });
+    } else {
+      axios({
+        method: method,
+        url: url,
+        data: data
+      }).then(function (response) {
+        //成功响应值response
+        resolve(response)
+      }).catch(function (error) {
+        //失败响应值error
+        console.log(error)
+        reject(error)
+      });
+    }
+    
   })
   
   return promise

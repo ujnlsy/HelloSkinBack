@@ -24,6 +24,9 @@ app.use('/api/customer/edit/skinDoc', require('./api/customer/edit/skinDoc/post'
 app.use('/api/customer/edit/skinDoc', require('./api/customer/edit/skinDoc/put'));
 
 
+app.use('/HelloSkin/customer', require('./HelloSkin/customer/new'));
+
+
 app.use(express.static('src'));     // 指定静态资源所在的目录
 
 // 设置路由配置

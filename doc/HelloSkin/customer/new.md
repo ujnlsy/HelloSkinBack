@@ -7,7 +7,7 @@
 #### 参数
 |参数名|类型|是否必须|描述|
 |---|---|---|---|
-|userName|string|T|用户名，唯一，可以字母数字下划线组成|
+|userName|string|T|用户名，唯一，可以字母数字组成|
 |name|string|T|姓名|
 |memberType|string|F|会员类型，值为1普通，2皮肤管理，3痘痘消痘，4痘痘维稳，5痘痘强化|
 |circleTime|array|F|管理时间周期|
