@@ -8,14 +8,14 @@ import * as mapping from '@/utils/keyMap.js'
 export default {
 	name: 'SelfDesc',
   props: {
-    customerId: String
+    customerId: Number
   },
   data() {
     return {
     	selfDesc: {
         skinType: [],  //皮肤情况，皮肤类型
         skinProblem: [],  //
-        desc: '',  //
+        descNote: '',  //
         step: '',  //
         skinProduct: '',  //
         heavy: '',  //痘痘情况
@@ -57,7 +57,7 @@ export default {
       console.log(that.selfDesc)
       const json = api.putCustomerSelfDesc({
         query: that.selfDesc,
-        method: 'post'
+        method: 'POST'
       }).then((res) => {
         let r = res.data.code
         if (res.data.code == 0) {
@@ -78,6 +78,7 @@ export default {
         }
       }).then((res) => {
     		let r = res.data.data
+        that.selfDesc = r
       })
     }
   }
@@ -104,7 +105,7 @@ export default {
 
 
       <el-form-item label="3.你的皮肤状况描述？（从第一次出现皮肤问题开始，用过、吃过什么药或护肤品，做过什么治疗，有什么改善或加重，像讲故事一样仔细讲述。）" >
-        <el-input type="textarea" :autosize="{ minRows: 4}" v-model="selfDesc.desc"></el-input>
+        <el-input type="textarea" :autosize="{ minRows: 4}" v-model="selfDesc.descNote"></el-input>
       </el-form-item>
 
       <el-form-item label="4.日常的护肤步骤（如，一天用几次洗面奶，霜乳精华的使用顺序，几天敷一次面膜）">
@@ -120,7 +121,7 @@ export default {
     <div class="pimple">
       <div class="pimple-title">痘痘情况</div>
       <el-form-item label="1.是否有例假前痘痘加重的情况">
-        <el-radio v-for="i in heavy" v-model="selfDesc.heavy" label="i.value">{{i.label}}</el-radio>
+        <el-radio v-for="i in heavy" v-model="selfDesc.heavy" :label="i.value">{{i.label}}</el-radio>
       </el-form-item>
 
       <el-form-item label="2.长痘痘多久了（第一次长痘的年龄）？">
@@ -128,7 +129,7 @@ export default {
       </el-form-item>
 
       <el-form-item label="3.痘痘类型？">
-        <el-radio v-for="i in pimpleType" v-model="selfDesc.pimpleType" label="i.value">{{i.label}}</el-radio>
+        <el-radio v-for="i in pimpleType" v-model="selfDesc.pimpleType" :label="i.value">{{i.label}}</el-radio>
       </el-form-item>
 
       <el-form-item label="4.背上有没有痘痘？" >

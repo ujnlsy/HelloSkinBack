@@ -9,7 +9,7 @@ import * as tools from '@/utils/tools.js'
 export default {
 	name: 'SkinDoc',
   prop: {
-		customerId: String
+		customerId: Number
   },
   data() {
     return {

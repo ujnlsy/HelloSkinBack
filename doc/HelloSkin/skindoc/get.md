@@ -1,5 +1,5 @@
 #### 地址
-`/api/customer/edit/selfDoc/get`
+`/HelloSkin/skindoc/get`
 
 #### 描述
 获取客户皮肤档案历史记录

@@ -47,7 +47,20 @@
   code: 0,
   msg: "ok",
   data: {
-    customerId: '100001'  //保存成功返回一个客户id，字符串格式
+    id: 1,  //保存成功返回一个客户id，字符串格式
+    userName: 'zhangmeimei',
+    name: '张美美',
+    memberType: '1',
+    circleTime: [ 1546272000000, 1546876800000 ],
+    age: 1546272000000,
+    sex: '2',
+    high: 168,
+    weight: 56,
+    region: ['浙江', '杭州'],
+    eat: ['抽烟', '饮酒'],
+    medhis: ['糖尿病', '高血压'],
+    stayUp: '熬夜',
+    pregnancy: '不备孕'
   }
 }
 ```

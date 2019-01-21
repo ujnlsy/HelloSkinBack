@@ -22,6 +22,13 @@ const timestampToTime = function(cjsj, type) {
   }
 }
 
+/*字符串转数组*/
+const stringToArr = function (str) {
+  let arr = str.split(',')
+  return arr
+}
+
 export {
-  timestampToTime
+  timestampToTime,
+  stringToArr
 }

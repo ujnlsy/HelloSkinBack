@@ -13,8 +13,21 @@ const getCustomerList = (params) => vueRequest(params, 'HelloSkin/customer/list'
 //提交用户基本信息
 const postCustomerBase = (params) => vueRequest(params, 'HelloSkin/customer/new')
 
+//获取用户基本信息
+const getCustomerBase = (params) => vueRequest(params, 'HelloSkin/customer/get')
+
+//修改用户基本信息
+const putCustomerBase = (params) => vueRequest(params, 'HelloSkin/customer/update')
+
+
+
 //提交用户自述信息
-const putCustomerSelfDesc = (params) => vueRequest(params, 'api/customer/edit/selfDesc/post')
+const putCustomerSelfDesc = (params) => vueRequest(params, 'HelloSkin/skindesc/new')
+
+//获取用户自述信息
+const getCustomerSelfDesc = (params) => vueRequest(params, 'HelloSkin/skindesc/get')
+
+
 
 //提交用户皮肤情况
 const postCustomerSkinDoc = (params) => vueRequest(params, 'HelloSkin/skindesc/new')
@@ -25,14 +38,6 @@ const getCustomerHisSolution = (params) => vueRequest(params, 'HelloSkin/skindes
 //修改用户历史档案
 const putCustomerHisSolution = (params) => vueRequest(params, 'HelloSkin/skindesc/update')
 
-//获取用户基本信息
-const getCustomerBase = (params) => vueRequest(params, 'HelloSkin/customer/get')
-
-//修改用户基本信息
-const putCustomerBase = (params) => vueRequest(params, 'HelloSkin/customer/update')
-
-//修改用户自述
-const getCustomerSelfDesc = (params) => vueRequest(params, 'HelloSkin/skindesc/list')
 
 export {
   getUser,

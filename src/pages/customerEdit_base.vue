@@ -3,13 +3,14 @@
    * Created by lsy on 2019/1/9.
    */
   import * as api from '@/api/api.js'
+  import * as tool from '@/utils/tools'
   import * as mapping from '@/utils/keyMap.js'
   import { pca } from 'area-data';
 
   export default {
   	name: 'BaseInfo',
     props: {
-  		customerId: String
+  		customerId: Number
     },
     data() {
       return {
@@ -76,7 +77,12 @@
         return mapping.medhis('0')
       }
     },
-    created () {
+    mounted () {
+      this.getBaseInfo()
+//  		this.$nextTick(function () {
+//        this.getBaseInfo()
+//      })
+
     },
     methods: {
       //会员类型改变
@@ -115,7 +121,22 @@
                 type: 'success'
               });
 
-              that.$emit('getNewCreatedCustomerId', res.data.data.customerId)
+              let d = res.data.data
+              let c = {
+              	id: d.id,
+              	name: d.name,
+                age: d.age,
+                sex: mapping.gender(d.sex),
+                high: d.high,
+                weight: d.weight
+              }
+              that.$emit('getnewcreatedcustomerid', c)
+
+            } else {
+              that.$message({
+                message: res.data.msg,
+                type: 'error'
+              });
             }
           })
         }
@@ -125,17 +146,34 @@
       	let that = this
         const json = api.getCustomerBase({
         	query: {
-        		customerId: that.customerId
+        		id: that.customerId
           }
         }).then((res) => {
+      		if(res.data.code == 0){
+            let d = res.data.data
+            let c = {
+              id: d.id,
+              name: d.name,
+              age: d.age,
+              sex: mapping.gender(d.sex),
+              high: d.high,
+              weight: d.weight
+            }
+            that.$emit('getnewcreatedcustomerid', c)
+          }
       		that.baseInfo = res.data.data
+          that.baseInfo.circleTime = tool.stringToArr(that.baseInfo.circleTime)
+          that.baseInfo.region = tool.stringToArr(that.baseInfo.region)
+          that.baseInfo.eat = tool.stringToArr(that.baseInfo.eat)
+          that.baseInfo.medhis = tool.stringToArr(that.baseInfo.medhis)
         })
       },
       //修改会员基本信息
       updateBaseInfo() {
       	let that = this
         const json = api.putCustomerBase({
-        	query: that.baseInfo
+        	query: that.baseInfo,
+          method: 'POST'
         }).then((res) => {
       		if (res.data.code == 0) {
             that.$message({
@@ -259,8 +297,8 @@
         </div>
 
       </div>
-      <el-button v-if="customerId == undefined" @click="submitBaseInfo"  type="primary" size="small">保存</el-button>
-      <el-button v-else @click="updateBaseInfo"  type="primary" size="small">保存</el-button>
+      <el-button class="create-btn" v-if="customerId == 0" @click="submitBaseInfo"  type="primary" size="small">保存</el-button>
+      <el-button class="update-btn" v-else @click="updateBaseInfo"  type="primary" size="small">保存</el-button>
     </el-form>
 
 

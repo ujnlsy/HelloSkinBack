@@ -58,12 +58,12 @@ export default {
           r[index].manageStart = tools.timestampToTime(r[index].circleTime[0], 'y-m-d')
           r[index].manageEnd = tools.timestampToTime(r[index].circleTime[1], 'y-m-d')
           r[index].gender = mapping.gender(r[index].sex)
-          r[index].region = r[index].region[0]+'-'+r[index].region[1]
+          r[index].region = r[index].region
         })
       	that.tableData = r
 
         that.page = res.data.data.page
-      }).catch( (errMsg)=>{
+      }).catch( (errMsg) => {
         console.log(errMsg);//错误提示信息
       })
     },
@@ -155,7 +155,7 @@ export default {
         width="120"
       >
         <template slot-scope="scope">
-          <el-button @click="update(scope.row.customerId)" type="text" size="small">更新</el-button>
+          <el-button @click="update(scope.row.id)" type="text" size="small">更新</el-button>
         </template>
       </el-table-column>
     </el-table>

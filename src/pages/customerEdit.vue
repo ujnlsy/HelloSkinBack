@@ -18,7 +18,12 @@ export default {
     return {
     	isEdit: false,  //是否显示
       activeName: '0',  //控制tab显示
-      customerId: '',  //客户id
+      customerId: 0,  //客户id，表示没有id
+      name: '',
+      age: '',
+      sex: '',
+      high: '',
+      weight: ''
     }
   },
   computed: {
@@ -39,13 +44,20 @@ export default {
     	let id = this.$route.query.customer
       if (id != undefined) {
     		this.isEdit = true
+        this.customerId = id
       } else {
     		this.activeName = '2'
       }
     },
     //获取customerEdit_base子组件新建客户信息的customerId
-    getNewCreatedCustomerId(id) {
-    	this.customerId = id
+    getnewcreatedcustomerid(c) {
+    	this.customerId = c.id
+      this.name = c.name
+      this.age = c.age
+      this.sex = c.sex
+      this.high = c.high
+      this.weight = c.weight
+      this.isEdit = true
     }
   }
 };
@@ -55,22 +67,22 @@ export default {
   <div class="container">
     <div class="container-topbar">
       <div v-if="isEdit" class="customer-data">
-        王晓花，25岁，女，156cm/56kg
+        {{name}} {{age != '' ? '，'+age+'岁' : ''}} {{sex}} {{high}}cm/{{weight}}kg
       </div>
       <el-button @click="goPage('/index/customerList')" type="primary" size="small">返回列表</el-button>
     </div>
 
     <el-tabs v-model="activeName" type="border-card">
-      <el-tab-pane :customer-id="customerId" label="皮肤档案" name="0">
-        <skin-doc></skin-doc>
+      <el-tab-pane label="皮肤档案" name="0">
+        <skin-doc :customer-id="customerId"></skin-doc>
       </el-tab-pane>
 
-      <el-tab-pane :customer-id="customerId" label="建档自述" name="1">
-        <self-desc></self-desc>
+      <el-tab-pane label="建档自述" name="1">
+        <self-desc :customer-id="customerId"></self-desc>
       </el-tab-pane>
 
-      <el-tab-pane :customer-id="customerId" label="客户信息" name="2">
-        <base-info></base-info>
+      <el-tab-pane label="客户信息" name="2">
+        <base-info :customer-id="customerId" @getnewcreatedcustomerid="getnewcreatedcustomerid"></base-info>
       </el-tab-pane>
 
     </el-tabs>

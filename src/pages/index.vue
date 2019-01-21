@@ -13,7 +13,6 @@ export default {
 
   methods: {
     handleSelect(key, keyPath) {
-      console.log(key, keyPath);
     },
     goPage(path) {
     	this.$router.push({path: path})

@@ -44,9 +44,16 @@ const vueRequest = function (params = {}, url) {
   const promise = new Promise((resolve,reject)=>{
     if(method == 'GET') {
       axios({
+        headers: {
+          //这里的请求头与后台商量设置
+          'content-Type': 'application/x-www-form-urlencoded'
+        },
         method: 'GET',
         url: url,
-        query: Qs.stringify(data),
+        params: data,
+        paramsSerializer: function(params) {
+          return Qs.stringify(params, {arrayFormat: 'brackets'})
+        },
       }).then(function (response) {
         //成功响应值response
         resolve(response)
