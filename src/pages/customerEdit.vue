@@ -44,7 +44,7 @@ export default {
     	let id = this.$route.query.customer
       if (id != undefined) {
     		this.isEdit = true
-        this.customerId = id
+        this.customerId = parseInt(id)
       } else {
     		this.activeName = '2'
       }

@@ -7,8 +7,8 @@
 #### 参数
 |参数名|类型|是否必须|描述|
 |---|---|---|---|
-|customerId|string|T|客户id|
-|recordId|string|T|记录id|
+|customerId|int|T|客户id|
+|id|int|T|记录id|
 |diagnose|string|F|诊断|
 |medicalSolution|string|F|用药方案|
 |skinSolution|string|F|护肤方案|
@@ -21,8 +21,8 @@
 示例：
 ```
 {
-  customerId: '100001',
-  recordId: '1000001',
+  customerId: 1,
+  recordId: 1,
   diagnose: '敏感肌',
   medicalSolution: '吃一个月维安酯，一天3次，一次1粒',
   skinSolution: '晚上洗完脸之后涂水杨酸',

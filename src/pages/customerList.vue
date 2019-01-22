@@ -51,7 +51,7 @@ export default {
       	let r = res.data.data.records
         r.forEach(function (item, index, r) {
         	r[index].createTime = tools.timestampToTime(r[index].createTime, 'y-m-d')
-          r[index].updateTime = tools.timestampToTime(r[index].updateTime, 'y-m-d h:m')
+          r[index].recentUpdate = tools.timestampToTime(r[index].recentUpdate, 'y-m-d h:m')
           r[index].memberType = mapping.customerType(r[index].memberType)
           let age = new Date().getTime()-r[index].birth
           r[index].birth = Math.floor(age/(3600*24*365*1000))
@@ -100,7 +100,7 @@ export default {
         width="100">
       </el-table-column>
       <el-table-column
-        prop="updateTime"
+        prop="recentUpdate"
         label="最近更新"
         width="140">
       </el-table-column>

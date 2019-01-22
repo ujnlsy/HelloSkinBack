@@ -75,6 +75,9 @@
       },
       medhis: function () {
         return mapping.medhis('0')
+      },
+      defaultAge: function() {
+        return new Date(parseInt(631123200000) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ');
       }
     },
     mounted () {
@@ -239,6 +242,7 @@
           <div class="input-label">年龄</div>
           <el-date-picker
             v-model="baseInfo.age"
+            :default-value="defaultAge"
             type="month"
             value-format="timestamp"
             placeholder="出生年月">

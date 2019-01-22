@@ -8,11 +8,12 @@ import * as tools from '@/utils/tools.js'
 
 export default {
 	name: 'SkinDoc',
-  prop: {
+  props: {
 		customerId: Number
   },
   data() {
     return {
+    	docId: '',
     	skinDoc: {
         diagnose: '',
         medicalSolution: '',
@@ -34,14 +35,35 @@ export default {
     }
   },
   created () {
-		if(this.customerId != '' && this.customerId !=undefined){
+		if(this.customerId != 0){
       this.getHisSolution()
     }
   },
   methods: {
+		//初始化字段
+		initSkinDoc(){
+			this.skinDoc = {
+        diagnose: '',
+        medicalSolution: '',
+        skinSolution: '',
+        haveProduct: '',
+        haveProcess: '',
+        note: '',
+        images: []
+      }
+      this.docId = ''
+    },
+    //提交新档案
     submitSkinDoc() {
       let that = this
       that.skinDoc.customerId = that.customerId
+      if(that.skinDoc.skinSolution == '') {
+        that.$message({
+          message: '护肤方案不能为空',
+          type: 'error'
+        });
+        return
+      }
       console.log(that.skinDoc)
       const json = api.postCustomerSkinDoc({
         query: that.skinDoc,
@@ -54,10 +76,13 @@ export default {
             type: 'success'
           });
         }
-        console.log(r)
+
+        that.initSkinDoc()
+        that.getHisSolution()
       })
     },
 
+    //获取历史档案
     getHisSolution() {
     	let that = this
       const json = api.getCustomerHisSolution({
@@ -67,29 +92,61 @@ export default {
       }).then((res) => {
     		let r = res.data.data.records
         r.forEach(function (item, index, r) {
-          r[index].createdTime = tools.timestampToTime(r[index].createdTime, 'y-m-d')
+          r[index].createTime = tools.timestampToTime(r[index].createTime, 'y-m-d')
         })
         that.hisSolution = r
         console.log(r)
       })
     },
 
-    //保存修改
-    editSkinDoc(item) {
-    	let that = this
+    //修改档案
+    editDoc(item){
       this.isEdit = true
+      this.docId = item.id
       this.skinDoc.diagnose = item.diagnose
-    	this.skinDoc.medicalSolution = item.medicalSolution
+      this.skinDoc.medicalSolution = item.medicalSolution
       this.skinDoc.skinSolution = item.skinSolution
       this.skinDoc.haveProduct = item.haveProduct
       this.skinDoc.haveProcess = item.haveProcess
       this.skinDoc.note = item.note
       this.skinDoc.images = item.images
+    },
 
+    //删除档案
+    deleteSkinDoc(id) {
+      let that = this
+      const json = api.DeleteCustomerHisSolution(
+        {
+          query: {
+            id: id
+          }
+        }
+      ).then((res) => {
+        let r = res.data
+        if(r.code == 0){
+          that.$message({
+            message: '档案删除成功',
+            type: 'success'
+          });
+          that.getHisSolution()
+        }
+      })
+    },
+
+    //提交修改按钮
+    submitEdit() {
+    	let that = this
+      if(that.skinDoc.skinSolution == '') {
+        that.$message({
+          message: '护肤方案不能为空',
+          type: 'error'
+        });
+        return
+      }
+      console.log('putCustomerHisSolution',that.skinDoc)
       const json = api.putCustomerHisSolution({
       	query: {
-      		customerId: that.skinDoc.customerId,
-          recordID: item.recordId,
+          id: that.docId,
           diagnose: that.skinDoc.diagnose,
           medicalSolution: that.skinDoc.medicalSolution,
           skinSolution: that.skinDoc.skinSolution,
@@ -100,13 +157,22 @@ export default {
         }
       }).then((res) => {
         let r = res.data.code
+        if(r == 0){
+          that.$message({
+            message: '档案修改成功',
+            type: 'success'
+          });
+          that.initSkinDoc()
+          that.getHisSolution()
+        }
+
         console.log(r)
       })
     },
 
     //取消修改
     cancelSkinDoc() {
-    	this.skinDoc = []
+    	this.initSkinDoc()
       this.isEdit = false
     },
 
@@ -163,7 +229,7 @@ export default {
           <el-input type="textarea" :autosize="{ minRows: 4}" v-model="skinDoc.note"></el-input>
         </el-form-item>
         <div v-if="isEdit" class="edit-his">
-          <el-button @click="editSkinDoc"  type="primary" size="small">保存修改</el-button>
+          <el-button @click="submitEdit"  type="primary" size="small">保存修改</el-button>
           <el-button @click="cancelSkinDoc"  type="primary" size="small">取消修改</el-button>
         </div>
         <el-button v-else  @click="submitSkinDoc"  type="primary" size="small">保存</el-button>
@@ -173,7 +239,7 @@ export default {
     <div class="history-solution">
       <div class="his-title">历史档案</div>
       <div v-for="item in hisSolution" class="his-item">
-        <div class="his-time">{{item.createdTime}}</div>
+        <div class="his-time">{{item.createTime}}</div>
         <div class="his-diagnose">诊断：{{item.diagnose}}</div>
         <div class="his-drug">用药方案：{{item.medicalSolution}}</div>
         <div class="his-skin">护肤方案：{{item.skinSolution}}</div>
@@ -184,7 +250,8 @@ export default {
         <div class="his-process">用药过程：{{item.haveProcess}}</div>
         <div class="his-other">备注：{{item.note}}</div>
         <div class="his-edit">
-          <el-button @click="editSkinDoc(item)"  type="primary" size="small">修改</el-button>
+          <el-button @click="editDoc(item)"  type="primary" size="small">修改</el-button>
+          <el-button @click="deleteSkinDoc(item.id)" size="small">删除</el-button>
         </div>
       </div>
     </div>

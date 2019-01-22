@@ -35,7 +35,10 @@
 ```
 {
   code: 0,
-  msg: "ok"
+  msg: "ok",
+  data: {
+    id: 1
+  }
 }
 ```
 

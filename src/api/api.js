@@ -30,13 +30,16 @@ const getCustomerSelfDesc = (params) => vueRequest(params, 'HelloSkin/skindesc/g
 
 
 //提交用户皮肤情况
-const postCustomerSkinDoc = (params) => vueRequest(params, 'HelloSkin/skindesc/new')
+const postCustomerSkinDoc = (params) => vueRequest(params, 'HelloSkin/skindoc/new')
 
 //获取用户历史档案
-const getCustomerHisSolution = (params) => vueRequest(params, 'HelloSkin/skindesc/get')
+const getCustomerHisSolution = (params) => vueRequest(params, 'HelloSkin/skindoc/list')
 
 //修改用户历史档案
-const putCustomerHisSolution = (params) => vueRequest(params, 'HelloSkin/skindesc/update')
+const putCustomerHisSolution = (params) => vueRequest(params, 'HelloSkin/skindoc/update')
+
+//删除用户档案
+const DeleteCustomerHisSolution = (params) => vueRequest(params, 'HelloSkin/skindoc/delete')
 
 
 export {
@@ -49,5 +52,6 @@ export {
   putCustomerHisSolution,
   getCustomerBase,
   putCustomerBase,
-  getCustomerSelfDesc
+  getCustomerSelfDesc,
+  DeleteCustomerHisSolution
 }

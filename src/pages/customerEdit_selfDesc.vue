@@ -4,6 +4,7 @@
  */
 import * as api from '@/api/api.js'
 import * as mapping from '@/utils/keyMap.js'
+import * as tools from '@/utils/tools.js'
 
 export default {
 	name: 'SelfDesc',
@@ -48,25 +49,23 @@ export default {
     }
   },
   created () {
+		this.getCustomerSelfDesc()
   },
   methods: {
 		//提交客户自述
     submitSelfDesc() {
       let that = this
       that.selfDesc.customerId = that.customerId
-      console.log(that.selfDesc)
       const json = api.putCustomerSelfDesc({
         query: that.selfDesc,
         method: 'POST'
       }).then((res) => {
-        let r = res.data.code
         if (res.data.code == 0) {
           that.$message({
-            message: '恭喜你，这是一条成功消息',
+            message: '保存成功',
             type: 'success'
           });
         }
-        console.log(r)
       })
     },
     //获取客户自述
@@ -77,8 +76,13 @@ export default {
       		customerId: that.customerId
         }
       }).then((res) => {
-    		let r = res.data.data
-        that.selfDesc = r
+    		if(res.data.code == 0){
+          let r = res.data.data
+          r.skinType = tools.stringToArr(r.skinType)
+          r.skinProblem = tools.stringToArr(r.skinProblem)
+          that.selfDesc = r
+        console.log('getCustomerSelfDesc',that.selfDesc)
+        }
       })
     }
   }
