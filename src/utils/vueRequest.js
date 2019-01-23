@@ -7,9 +7,9 @@ import Qs from 'qs'
 axios.defaults.timeout = 10000;   // 超时时间
 axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded'
 
-//axios.defaults.baseURL = 'http://';  // 正式地址
+axios.defaults.baseURL = 'http://www.helloskin.club/';  // 正式地址
 // axios.defaults.baseURL = 'http://localhost:9007/';  // 本地环境
-axios.defaults.baseURL = 'http://140.143.61.14:8080/'  //测试环境
+// axios.defaults.baseURL = 'http://140.143.61.14:8080/'  //测试环境
 
 //整理数据
 //obj转formdata格式
@@ -33,6 +33,21 @@ function makeFormData(obj, form_data) {
 //
 //   return form_data
 // }
+
+// 添加响应拦截器
+axios.interceptors.response.use(function (response) {
+  // 对响应数据做点什么
+  if(response.data.code == 1000) {
+  // if(window.location.hash != '#/login') {
+    window.location.href='#/login'
+    
+  } else {
+    return response;
+  }
+}, function (error) {
+  // 对响应错误做点什么
+  return Promise.reject(error);
+});
 
 
 const vueRequest = function (params = {}, url) {

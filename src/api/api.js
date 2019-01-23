@@ -5,7 +5,10 @@
 import vueRequest from '@/utils/vueRequest'
 
 //获取登录信息
-const getUser = (params) => vueRequest(params, 'api/user/login');
+const login = (params) => vueRequest(params, 'HelloSkin/login');
+
+//登出
+const logout = (params) => vueRequest(params, 'HelloSkin/logout')
 
 //客户列表信息
 const getCustomerList = (params) => vueRequest(params, 'HelloSkin/customer/list')
@@ -43,7 +46,8 @@ const DeleteCustomerHisSolution = (params) => vueRequest(params, 'HelloSkin/skin
 
 
 export {
-  getUser,
+  login,
+  logout,
   getCustomerList,
   postCustomerBase,
   putCustomerSelfDesc,

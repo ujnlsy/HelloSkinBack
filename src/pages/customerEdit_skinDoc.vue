@@ -26,7 +26,10 @@ export default {
       hisSolution: [],
       dialogImageUrl: '',
       dialogVisible: false,
-      isEdit: false
+      isEdit: false,
+      hisprepic: false,
+      hisprepicurl: '',
+      imghost: 'http://140.143.61.14:8080/HelloSkin/download/picture?path='
     }
   },
   computed: {
@@ -91,8 +94,9 @@ export default {
         }
       }).then((res) => {
     		let r = res.data.data.records
-        r.forEach(function (item, index, r) {
-          r[index].createTime = tools.timestampToTime(r[index].createTime, 'y-m-d')
+        r.forEach(function (item, index, l) {
+          r[index].createTime = tools.timestampToTime(l[index].createTime, 'y-m-d')
+          r[index].images = tools.stringToArr(l[index].images)
         })
         that.hisSolution = r
         console.log(r)
@@ -177,16 +181,31 @@ export default {
     },
 
     handleSuccess(response, file, fileList) {
-      this.skinDoc.images = fileList
+    	if(response.code == 0){
+        let arr = []
+        fileList.forEach((item, index, r) => {
+        	arr[index] = item.response.data[0].url
+        })
+        this.skinDoc.images = arr
+      }
     },
     handleRemove(file, fileList) {
-      console.log(file, fileList);
-      this.skinDoc.images = fileList
+      if(response.code == 0){
+        let arr = []
+        fileList.forEach((item, index, r) => {
+          arr[index] = item.response.data[0].url
+        })
+        this.skinDoc.images = arr
+      }
     },
     handlePictureCardPreview(file) {
     	console.log(file)
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
+    },
+    previewimg(url) {
+    	this.hisprepic = true
+      this.hisprepicurl = url
     }
   }
 };
@@ -199,20 +218,19 @@ export default {
         <el-form-item label="诊断">
           <el-input type="textarea" :autosize="{ minRows: 2}" v-model="skinDoc.diagnose"></el-input>
         </el-form-item>
-        <el-form-item label="用药方案" >
-          <el-input type="textarea" :autosize="{ minRows: 4}" v-model="skinDoc.medicalSolution"></el-input>
-        </el-form-item>
         <el-form-item label="护肤方案" >
           <el-input type="textarea" :autosize="{ minRows: 4}" v-model="skinDoc.skinSolution"></el-input>
         </el-form-item>
+        <el-form-item label="用药方案" >
+          <el-input type="textarea" :autosize="{ minRows: 4}" v-model="skinDoc.medicalSolution"></el-input>
+        </el-form-item>
         <el-form-item label="近况图片">
           <el-upload
-            action="https://jsonplaceholder.typicode.com/posts/"
+            action="http://140.143.61.14:8080/HelloSkin/upload/picture/"
             list-type="picture-card"
             :on-preview="handlePictureCardPreview"
             :on-remove="handleRemove"
-            :on-success="handleSuccess"
-            :file-list="skinDoc.images">
+            :on-success="handleSuccess">
             <i class="el-icon-plus"></i>
           </el-upload>
           <el-dialog :visible.sync="dialogVisible">
@@ -244,8 +262,11 @@ export default {
         <div class="his-drug">用药方案：{{item.medicalSolution}}</div>
         <div class="his-skin">护肤方案：{{item.skinSolution}}</div>
         <div v-for="img in item.images" class="his-pic">近况图片：
-          <img class="recent-img" src="img.src"/>
+          <img @click="previewimg(img)" v-if="item.images[0].length>0" class="recent-img" :src="imghost+img"/>
         </div>
+        <el-dialog :visible.sync="hisprepic">
+          <img width="100%" :src="imghost+hisprepicurl" alt="">
+        </el-dialog>
         <div class="his-cosmeceuticals">现有药妆：{{item.haveProduct}}</div>
         <div class="his-process">用药过程：{{item.haveProcess}}</div>
         <div class="his-other">备注：{{item.note}}</div>
@@ -259,4 +280,8 @@ export default {
 </template>
 
 <style>
+  .recent-img{
+    height: 100px;
+    width: 100px;
+  }
 </style>

@@ -49,6 +49,7 @@ axios.interceptors.request.use(
 // http response 拦截器
 axios.interceptors.response.use(
   response => {
+    console.log("response.data", response.data)
     if (response.data.resultCode=="404") {
       console.log("response.data.resultCode是404")
       // 返回 错误代码-1 清除ticket信息并跳转到登录页面
@@ -62,4 +63,4 @@ axios.interceptors.response.use(
   error => {
     return Promise.reject(error.response)   // 返回接口返回的错误信息
   });
-export default axios;
+// export default axios;

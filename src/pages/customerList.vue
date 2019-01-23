@@ -53,8 +53,9 @@ export default {
         	r[index].createTime = tools.timestampToTime(r[index].createTime, 'y-m-d')
           r[index].recentUpdate = tools.timestampToTime(r[index].recentUpdate, 'y-m-d h:m')
           r[index].memberType = mapping.customerType(r[index].memberType)
-          let age = new Date().getTime()-r[index].birth
-          r[index].birth = Math.floor(age/(3600*24*365*1000))
+          let now = new Date().getTime()
+          let age = now-r[index].age
+          r[index].age = Math.floor(age/(3600*24*365*1000))
           r[index].manageStart = tools.timestampToTime(r[index].circleTime[0], 'y-m-d')
           r[index].manageEnd = tools.timestampToTime(r[index].circleTime[1], 'y-m-d')
           r[index].gender = mapping.gender(r[index].sex)
@@ -138,7 +139,7 @@ export default {
         label="年龄/性别"
         width="110">
         <template slot-scope="scope">
-          {{ scope.row.birth }}岁/{{ scope.row.gender }}
+          {{ scope.row.age }}岁/{{ scope.row.gender }}
         </template>
       </el-table-column>
       <el-table-column

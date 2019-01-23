@@ -77,15 +77,12 @@
         return mapping.medhis('0')
       },
       defaultAge: function() {
-        return new Date(parseInt(631123200000) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ');
+        return new Date('1990-1-01');
       }
     },
-    mounted () {
+    created () {
       this.getBaseInfo()
-//  		this.$nextTick(function () {
-//        this.getBaseInfo()
-//      })
-
+      this.changeCustomerType()
     },
     methods: {
       //会员类型改变
@@ -125,10 +122,12 @@
               });
 
               let d = res.data.data
+              let now = new Date().getTime()
+              let age = Math.floor((now - d.age)/(3600*24*365*1000))
               let c = {
               	id: d.id,
               	name: d.name,
-                age: d.age,
+                age: age,
                 sex: mapping.gender(d.sex),
                 high: d.high,
                 weight: d.weight
@@ -154,10 +153,12 @@
         }).then((res) => {
       		if(res.data.code == 0){
             let d = res.data.data
+            let now = new Date().getTime()
+            let age = Math.floor((now - d.age)/(3600*24*365*1000))
             let c = {
               id: d.id,
               name: d.name,
-              age: d.age,
+              age: age,
               sex: mapping.gender(d.sex),
               high: d.high,
               weight: d.weight
@@ -242,9 +243,9 @@
           <div class="input-label">年龄</div>
           <el-date-picker
             v-model="baseInfo.age"
-            :default-value="defaultAge"
             type="month"
             value-format="timestamp"
+            :default-value="defaultAge"
             placeholder="出生年月">
           </el-date-picker>
         </div>
