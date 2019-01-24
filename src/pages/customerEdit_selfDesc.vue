@@ -49,7 +49,9 @@ export default {
     }
   },
   created () {
-		this.getCustomerSelfDesc()
+		if(this.customerId != 0) {
+      this.getCustomerSelfDesc()
+    }
   },
   methods: {
 		//提交客户自述

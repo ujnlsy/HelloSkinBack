@@ -47,7 +47,7 @@
         	userName: '',
           name: '',
           memberType: '',
-          circleTime: '',
+          circleTime: [],
           age: '',
           sex: '',
           high: '',
@@ -81,8 +81,10 @@
       }
     },
     created () {
-      this.getBaseInfo()
-      this.changeCustomerType()
+  		if(this.customerId != 0) {
+        this.getBaseInfo()
+        this.changeCustomerType()
+      }
     },
     methods: {
       //会员类型改变
@@ -193,7 +195,7 @@
 
 <template>
 
-    <el-form label-position="top" :model="baseInfo" :rules="baseInfoRules" ref="baseInfo" >
+    <el-form label-position="top" ref="baseInfo" >
 
       <div class="baseinfo">
         <div class="userName base-item">

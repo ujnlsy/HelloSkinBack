@@ -39,6 +39,10 @@ export default {
     	this.$router.push({path: '/index/customerEdit', query: { customer: id }})
     },
 
+    gotoCustomer(id) {
+      this.$router.push({path: '/customer', query: { customer: id }})
+    },
+
     getCustomerList(pageNum) {
       let that = this
       const json = api.getCustomerList({
@@ -156,6 +160,7 @@ export default {
         width="120"
       >
         <template slot-scope="scope">
+          <el-button @click="gotoCustomer(scope.row.id)" type="text" size="small">查看</el-button>
           <el-button @click="update(scope.row.id)" type="text" size="small">更新</el-button>
         </template>
       </el-table-column>

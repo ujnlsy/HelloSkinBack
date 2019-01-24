@@ -5,6 +5,7 @@
 import * as api from '@/api/api.js'
 import * as tools from '@/utils/tools.js'
 import * as mapping from '@/utils/keyMap.js'
+import {setCookie, getCookie} from '@/utils/cookie.js'
 
 export default {
   data() {
@@ -13,14 +14,15 @@ export default {
     	baseInfo: {},
       hisSolution: [],
       customerId: 0,
-      imghost: 'http://140.143.61.14:8080/HelloSkin/download/picture?path='
+      imghost: 'http://www.helloskin.club/HelloSkin/download/picture?path=',
+      customerActiveTime: ''
     };
   },
 
   created() {
+    this.getCustomerId()
     this.getBaseInfo()
     this.getHisSolution()
-    this.getCustomerId()
   },
   methods: {
     //获取页面id
@@ -29,7 +31,7 @@ export default {
       if (id != undefined) {
         this.customerId = parseInt(id)
       } else {
-        this.customerId = 0
+        this.customerId = parseInt(getCookie('userid'))
       }
     },
     //获取会员基本信息
@@ -41,9 +43,15 @@ export default {
         }
       }).then((res) => {
         let r = res.data.data
-        r.circleTime = tools.stringToArr(r.circleTime)
-        r.circleTime[0] = tools.timestampToTime(r.circleTime[0], 'y-m-d')
-        r.circleTime[1] = tools.timestampToTime(r.circleTime[1], 'y-m-d')
+        if(r.circleTime != '') {
+          r.circleTime = tools.stringToArr(r.circleTime)
+          r.circleTime[0] = tools.timestampToTime(r.circleTime[0], 'y-m-d')
+          r.circleTime[1] = tools.timestampToTime(r.circleTime[1], 'y-m-d')
+          that.customerActiveTime = r.circleTime[0]+'至'+r.circleTime[1]
+        }else {
+          that.customerActiveTime = '普通会员'
+        }
+
         let age = new Date().getTime()-r.age
         r.age = Math.floor(age/(3600*24*365*1000))
         r.sex = mapping.gender(r.sex)
@@ -59,12 +67,17 @@ export default {
           customerId: that.customerId
         }
       }).then((res) => {
-        let r = res.data.data.records
-        r.forEach(function (item, index, l) {
-          r[index].createTime = tools.timestampToTime(l[index].createTime, 'y-m-d')
-          r[index].images = tools.stringToArr(l[index].images)
-        })
-        that.hisSolution = r
+      	let r = res.data
+      	if(r.code == 0) {
+      		let record = r.data.records
+      		if(record.length>0){
+            record.forEach(function (item, index, l) {
+              record[index].createTime = tools.timestampToTime(l[index].createTime, 'y-m-d')
+              record[index].images = tools.stringToArr(l[index].images)
+            })
+            that.hisSolution = record
+          }
+        }
       })
     },
   }
@@ -95,7 +108,7 @@ export default {
       <mt-tab-container-item id="2">
         <div class="base-info">
           <div class="name doc-p">{{baseInfo.name}}</div>
-          <div class="doc-p">管理周期：{{baseInfo.circleTime[0]}}至{{baseInfo.circleTime[1]}}</div>
+          <div class="doc-p">管理周期：{{customerActiveTime}}</div>
           <div class="doc-p">性别：{{baseInfo.sex}}</div>
           <div class="doc-p">年龄：{{baseInfo.age}}</div>
           <div class="doc-p">身高体重：{{baseInfo.high}}cm/{{baseInfo.weight}}kg</div>
