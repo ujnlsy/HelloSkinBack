@@ -36,7 +36,7 @@ export default {
     },
 
     update(id) {
-    	this.$router.push({path: '/index/customerEdit', query: { customer: id }})
+    	this.$router.push({path: '/customerEdit', query: { customer: id }})
     },
 
     gotoCustomer(id) {
@@ -56,17 +56,17 @@ export default {
         r.forEach(function (item, index, r) {
         	r[index].createTime = tools.timestampToTime(r[index].createTime, 'y-m-d')
           r[index].recentUpdate = tools.timestampToTime(r[index].recentUpdate, 'y-m-d h:m')
-          r[index].memberType = mapping.customerType(r[index].memberType)
+          r[index].memberTypeText = mapping.customerType(r[index].memberType)
           let now = new Date().getTime()
           let age = now-r[index].age
           r[index].age = Math.floor(age/(3600*24*365*1000))
+          r[index].circleTime = tools.stringToArr(r[index].circleTime)
           r[index].manageStart = tools.timestampToTime(r[index].circleTime[0], 'y-m-d')
           r[index].manageEnd = tools.timestampToTime(r[index].circleTime[1], 'y-m-d')
           r[index].gender = mapping.gender(r[index].sex)
           r[index].region = r[index].region
         })
       	that.tableData = r
-
         that.page = res.data.data.page
       }).catch( (errMsg) => {
         console.log(errMsg);//错误提示信息
@@ -91,7 +91,7 @@ export default {
         </el-input>
       </div>
       <div class="add-archive">
-        <el-button @click="goPage('/index/customerEdit')" type="primary" size="small">新增档案</el-button>
+        <el-button @click="goPage('/customerEdit')" type="primary" size="small">新增档案</el-button>
       </div>
 
     </div>
@@ -118,7 +118,7 @@ export default {
             width="400"
             trigger="hover">
             <div class="baseinfo">
-              <div v-if="scope.row.manageStart!=''" class="time">管理周期：{{scope.row.manageStart}} 至 {{scope.row.manageEnd}}</div>
+              <div v-if="scope.row.memberType!='1' && scope.row.memberType!=''" class="time">管理周期：{{scope.row.manageStart}} 至 {{scope.row.manageEnd}}</div>
               <div class="original-state">护肤方案：{{scope.row.skinSolution}}</div>
               <div v-if="scope.row.medicalSolution!=''" class="original-want">用药方案：{{scope.row.medicalSolution}}</div>
             </div>
@@ -127,7 +127,7 @@ export default {
         </template>
       </el-table-column>
       <el-table-column
-        prop="memberType"
+        prop="memberTypeText"
         label="会员"
         width="100">
       </el-table-column>

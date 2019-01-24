@@ -22,7 +22,7 @@ export default{
   mounted() {
   	if (getCookie('name')) {
   		if(getCookie('userType') == 'manager') {
-        this.$router.push('/index/customerList')
+        this.$router.push('/customerList')
       } else {
         this.$router.push({path: '/customer', query: { id: getCookie('userid') }})
       }
@@ -36,7 +36,7 @@ export default{
       	alert('请输入用户名或密码')
       } else {
       	let data = {
-      		username: this.username,
+      		name: this.username,
           password: this.password
         }
 
@@ -54,7 +54,7 @@ export default{
             setCookie('userType', userType, expire)
 
             if(userType == 'manager') {
-              that.$router.push('/index/customerList')
+              that.$router.push('/customerList')
             }
 
             if(userType == 'user') {
@@ -75,7 +75,7 @@ export default{
   <div>
     <!--<img src="../assets/logo.png">-->
     <div class="login-wrap" v-show="showLogin">
-      <h3>登录</h3>
+      <h3>Hello Skin</h3>
       <p v-show="showTishi">{{tishi}}</p>
       <input type="text" placeholder="请输入用户名" v-model="username">
       <input type="password" placeholder="请输入密码" v-model="password">
@@ -88,8 +88,8 @@ export default{
   .login-wrap{text-align:center;}
   input{display:block; width:250px; height:40px; line-height:40px; margin:0 auto; margin-bottom: 10px; outline:none; border:1px solid #888; padding:10px; box-sizing:border-box;}
   p{color:red;}
-  button{display:block; width:250px; height:40px; line-height: 40px; margin:0 auto; border:none; background-color:#41b883; color:#fff; font-size:16px; margin-bottom:5px;}
+  button{display:block; width:250px; height:40px; line-height: 40px; margin:0 auto; border:none; background-color:#409EFF; color:#fff; font-size:16px; margin-bottom:5px;}
   span{cursor:pointer;}
-  span:hover{color:#41b883;}
+  span:hover{color:#409EFF;}
 
 </style>

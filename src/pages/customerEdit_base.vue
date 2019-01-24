@@ -46,7 +46,7 @@
         baseInfo: {
         	userName: '',
           name: '',
-          memberType: '',
+          memberType: '1',
           circleTime: [],
           age: '',
           sex: '',
@@ -177,8 +177,10 @@
       //修改会员基本信息
       updateBaseInfo() {
       	let that = this
+        let query = that.baseInfo
+        query.id = that.customerId
         const json = api.putCustomerBase({
-        	query: that.baseInfo,
+        	query: query,
           method: 'POST'
         }).then((res) => {
       		if (res.data.code == 0) {

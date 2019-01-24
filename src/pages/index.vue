@@ -26,7 +26,7 @@ export default {
     <el-header class="navigator">
       <div class="logo">Hello Skin</div>
       <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-        <el-menu-item index="1" @click="goPage('/index/customerList')">客户列表</el-menu-item>
+        <el-menu-item index="1" @click="goPage('/customerList')">客户列表</el-menu-item>
         <el-submenu index="2">
           <template slot="title">商品列表</template>
           <el-menu-item index="2-1">选项1</el-menu-item>

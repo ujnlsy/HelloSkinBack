@@ -18,7 +18,7 @@ export default new Router({
     
     //管理后台
     {
-      path: '/index',
+      path: '/',
       name: 'Index',
       component: Index,
       children: [

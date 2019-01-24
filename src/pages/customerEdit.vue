@@ -69,20 +69,20 @@ export default {
       <div v-if="isEdit" class="customer-data">
         {{name}} {{age != '' ? '，'+age+'岁' : ''}} {{sex}} {{high}}cm/{{weight}}kg
       </div>
-      <el-button @click="goPage('/index/customerList')" type="primary" size="small">返回列表</el-button>
+      <el-button @click="goPage('/customerList')" type="primary" size="small">返回列表</el-button>
     </div>
 
     <el-tabs v-model="activeName" type="border-card">
       <el-tab-pane label="皮肤档案" name="0">
-        <skin-doc :customer-id="customerId"></skin-doc>
+        <skin-doc :customer-id.sync="customerId"></skin-doc>
       </el-tab-pane>
 
       <el-tab-pane label="建档自述" name="1">
-        <self-desc :customer-id="customerId"></self-desc>
+        <self-desc :customer-id.sync="customerId"></self-desc>
       </el-tab-pane>
 
       <el-tab-pane label="客户信息" name="2">
-        <base-info :customer-id="customerId" @getnewcreatedcustomerid="getnewcreatedcustomerid"></base-info>
+        <base-info :customer-id.sync="customerId" @getnewcreatedcustomerid="getnewcreatedcustomerid"></base-info>
       </el-tab-pane>
 
     </el-tabs>
