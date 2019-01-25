@@ -86,10 +86,10 @@ export default{
 
 <style>
   .login-wrap{text-align:center;}
-  input{display:block; width:250px; height:40px; line-height:40px; margin:0 auto; margin-bottom: 10px; outline:none; border:1px solid #888; padding:10px; box-sizing:border-box;}
-  p{color:red;}
-  button{display:block; width:250px; height:40px; line-height: 40px; margin:0 auto; border:none; background-color:#409EFF; color:#fff; font-size:16px; margin-bottom:5px;}
-  span{cursor:pointer;}
-  span:hover{color:#409EFF;}
+  .login-wrap input{display:block; width:250px; height:40px; line-height:40px; margin:0 auto; margin-bottom: 10px; outline:none; border:1px solid #888; padding:10px; box-sizing:border-box;}
+  .login-wrap p{color:red;}
+  .login-wrap button{display:block; width:250px; height:40px; line-height: 40px; margin:0 auto; border:none; background-color:#409EFF; color:#fff; font-size:16px; margin-bottom:5px;}
+  .login-wrap span{cursor:pointer;}
+  .login-wrap span:hover{color:#409EFF;}
 
 </style>
