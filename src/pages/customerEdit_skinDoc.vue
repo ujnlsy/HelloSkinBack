@@ -67,7 +67,6 @@ export default {
         });
         return
       }
-      console.log(that.skinDoc)
       const json = api.postCustomerSkinDoc({
         query: that.skinDoc,
         method: 'post'
@@ -97,6 +96,12 @@ export default {
         r.forEach(function (item, index, l) {
           r[index].createTime = tools.timestampToTime(l[index].createTime, 'y-m-d')
           r[index].images = tools.stringToArr(l[index].images)
+          r[index].diagnose = r[index].diagnose.replace(/\n/g, '<br/>')
+          r[index].medicalSolution = r[index].medicalSolution.replace(/\n/g, '<br/>')
+          r[index].skinSolution = r[index].skinSolution.replace(/\n/g, '<br/>')
+          r[index].haveProduct = r[index].haveProduct.replace(/\n/g, '<br/>')
+          r[index].haveProcess = r[index].haveProcess.replace(/\n/g, '<br/>')
+          r[index].note = r[index].note.replace(/\n/g, '<br/>')
         })
         that.hisSolution = r
         console.log(r)
@@ -109,11 +114,11 @@ export default {
       this.docId = item.id
       this.skinDoc.diagnose = item.diagnose
       this.skinDoc.medicalSolution = item.medicalSolution
-      this.skinDoc.skinSolution = item.skinSolution
-      this.skinDoc.haveProduct = item.haveProduct
-      this.skinDoc.haveProcess = item.haveProcess
-      this.skinDoc.note = item.note
-      this.skinDoc.images = item.images
+      this.skinDoc.skinSolution = item.skinSolution.replace(/<br\/>/g, '\n')
+      this.skinDoc.haveProduct = item.haveProduct.replace(/<br\/>/g, '\n')
+      this.skinDoc.haveProcess = item.haveProcess.replace(/<br\/>/g, '\n')
+      this.skinDoc.note = item.note.replace(/<br\/>/g, '\n')
+      this.skinDoc.images = item.images.replace(/<br\/>/g, '\n')
     },
 
     //删除档案
@@ -260,7 +265,7 @@ export default {
         <div class="his-time">{{item.createTime}}</div>
         <div class="his-diagnose">诊断：{{item.diagnose}}</div>
         <div class="his-drug">用药方案：{{item.medicalSolution}}</div>
-        <div class="his-skin">护肤方案：{{item.skinSolution}}</div>
+        <div class="his-skin">护肤方案：<p v-html="item.skinSolution"></p></div>
         <div v-for="img in item.images" class="his-pic">近况图片：
           <img @click="previewimg(img)" v-if="item.images[0].length>0" class="recent-img" :src="imghost+img"/>
         </div>

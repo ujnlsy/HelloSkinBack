@@ -74,6 +74,9 @@ export default {
             record.forEach(function (item, index, l) {
               record[index].createTime = tools.timestampToTime(l[index].createTime, 'y-m-d')
               record[index].images = tools.stringToArr(l[index].images)
+              record[index].medicalSolution = l[index].medicalSolution.replace(/\n/g, '<br/>')
+              record[index].skinSolution = l[index].skinSolution.replace(/\n/g, '<br/>')
+              record[index].note = l[index].note.replace(/\n/g, '<br/>')
             })
             that.hisSolution = record
           }
@@ -96,9 +99,9 @@ export default {
       <mt-tab-container-item id="1">
         <div v-for="item in hisSolution" class="doc-list">
           <div class="date doc-p">{{item.createTime}}</div>
-          <div class="doc-p">护肤方案：{{item.skinSolution}}</div>
-          <div class="doc-p">用药方案：{{item.medicalSolution}}</div>
-          <div class="doc-p">备注：{{item.note}}</div>
+          <div class="doc-p">护肤方案：<p v-html="item.skinSolution"></p></div>
+          <div class="doc-p">用药方案：<p v-html="item.medicalSolution"></p></div>
+          <div class="doc-p">备注：<p v-html="item.note"></p></div>
           <div class="his-pic">
             <div class="doc-p">近况图片：</div>
             <img v-if="item.images[0].length>0" v-for="img in item.images" class="recent-img" :src="imghost+img"/>
