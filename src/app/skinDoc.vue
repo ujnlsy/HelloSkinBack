@@ -14,7 +14,7 @@ export default {
     	baseInfo: {},
       hisSolution: [],
       customerId: 0,
-      imghost: 'http://www.helloskin.club/HelloSkin/download/picture?path=',
+      imghost: 'http://140.143.61.14:8080/HelloSkin/download/picture?path=',
       customerActiveTime: ''
     };
   },
