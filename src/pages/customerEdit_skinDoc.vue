@@ -263,8 +263,8 @@ export default {
       <div class="his-title">历史档案</div>
       <div v-for="item in hisSolution" class="his-item">
         <div class="his-time">{{item.createTime}}</div>
-        <div class="his-diagnose">诊断：{{item.diagnose}}</div>
-        <div class="his-drug">用药方案：{{item.medicalSolution}}</div>
+        <div class="his-diagnose">诊断：<p v-html="item.diagnose"></p></div>
+        <div class="his-drug">用药方案：<p v-html="item.medicalSolution"></p></div>
         <div class="his-skin">护肤方案：<p v-html="item.skinSolution"></p></div>
         <div v-for="img in item.images" class="his-pic">近况图片：
           <img @click="previewimg(img)" v-if="item.images[0].length>0" class="recent-img" :src="imghost+img"/>
@@ -272,9 +272,9 @@ export default {
         <el-dialog :visible.sync="hisprepic">
           <img width="100%" :src="imghost+hisprepicurl" alt="">
         </el-dialog>
-        <div class="his-cosmeceuticals">现有药妆：{{item.haveProduct}}</div>
-        <div class="his-process">用药过程：{{item.haveProcess}}</div>
-        <div class="his-other">备注：{{item.note}}</div>
+        <div class="his-cosmeceuticals">现有药妆：<p v-html="item.haveProduct"></p></div>
+        <div class="his-process">用药过程：<p v-html="item.haveProcess"></p></div>
+        <div class="his-other">备注：<p v-html="item.note"></p></div>
         <div class="his-edit">
           <el-button @click="editDoc(item)"  type="primary" size="small">修改</el-button>
           <el-button @click="deleteSkinDoc(item.id)" size="small">删除</el-button>
@@ -288,5 +288,8 @@ export default {
   .recent-img{
     height: 100px;
     width: 100px;
+  }
+  .his-item p{
+    color: #888;
   }
 </style>
