@@ -7,9 +7,10 @@ import Qs from 'qs'
 axios.defaults.timeout = 10000;   // 超时时间
 axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded'
 
-// axios.defaults.baseURL = 'http://www.helloskin.club/';  // 正式地址
+// axios.defaults.baseURL = 'http://www.helloskin.club/';  // 域名地址
 // axios.defaults.baseURL = 'http://localhost:9007/';  // 本地环境
-axios.defaults.baseURL = 'http://140.143.61.14:8080/'  //测试环境
+// axios.defaults.baseURL = 'http://140.143.61.14:8080/'  //正式环境
+axios.defaults.baseURL = 'http://140.143.61.14:81/'  //测试环境
 
 //整理数据
 //obj转formdata格式
