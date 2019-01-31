@@ -3,14 +3,16 @@
  */
 import axios from 'axios'
 import Qs from 'qs'
+import { delCookie } from '@/utils/cookie.js'
+
 // axios默认配置
 axios.defaults.timeout = 10000;   // 超时时间
 axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded'
 
 // axios.defaults.baseURL = 'http://www.helloskin.club/';  // 域名地址
-// axios.defaults.baseURL = 'http://localhost:9007/';  // 本地环境
-// axios.defaults.baseURL = 'http://140.143.61.14:8080/'  //正式环境
-axios.defaults.baseURL = 'http://140.143.61.14:8088/'  //测试环境
+axios.defaults.baseURL = 'http://localhost:9007/';  // 本地环境
+// axios.defaults.baseURL = 'http://140.143.61.14/'  //正式环境
+// axios.defaults.baseURL = 'http://140.143.61.14:8088/'  //测试环境
 
 //整理数据
 //obj转formdata格式
@@ -40,6 +42,9 @@ axios.interceptors.response.use(function (response) {
   // 对响应数据做点什么
   if(response.data.code == 1000) {
   // if(window.location.hash != '#/login') {
+    delCookie('name')
+    delCookie('userid')
+    delCookie('userType')
     window.location.href='#/login'
     
   } else {

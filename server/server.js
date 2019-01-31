@@ -23,7 +23,8 @@ app.use('/api/customer/edit/skinDoc', require('./api/customer/edit/skinDoc/get')
 app.use('/api/customer/edit/skinDoc', require('./api/customer/edit/skinDoc/post'));
 app.use('/api/customer/edit/skinDoc', require('./api/customer/edit/skinDoc/put'));
 
-
+app.use('/HelloSkin/', require('./HelloSkin/login'));
+app.use('/HelloSkin/customer', require('./HelloSkin/customer/list'));
 app.use('/HelloSkin/customer', require('./HelloSkin/customer/new'));
 
 

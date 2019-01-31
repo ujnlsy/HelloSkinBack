@@ -19,7 +19,7 @@ export default{
       newPassword: ''
     }
   },
-  mounted() {
+  created() {
   	if (getCookie('name')) {
   		if(getCookie('userType') == 'manager') {
         this.$router.push('/customerList')
