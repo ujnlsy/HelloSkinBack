@@ -5,6 +5,7 @@
 
 import {setCookie, getCookie} from '@/utils/cookie.js'
 import * as api from '@/api/api'
+import md5 from 'js-md5'
 
 export default{
   data(){
@@ -37,11 +38,12 @@ export default{
       } else {
       	let data = {
       		name: this.username,
-          password: this.password
+          password: md5(this.password)
         }
 
         let json = api.login({
-        	query: data
+        	query: data,
+          method: 'POST'
           }).then((res) => {
       		if(res.data.code == 0)
           {
